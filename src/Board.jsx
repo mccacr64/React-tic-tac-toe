@@ -30,7 +30,7 @@ function inputHandler(i){
   const fillSlot = input.slice();
   if(!fillSlot[i]){
     if(turn < 10){
-      if(turn % 2 === 0){
+      if(turn % 2 !== 0){
         fillSlot[i] = "X";
         setInput(fillSlot);
       }else{
