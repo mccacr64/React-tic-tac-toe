@@ -1,15 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Slot from './Slot'
 import './css/style.css'
 
 function Board() {
 // Turns
 let winner;
-const[turn, setTurn] = useState(1)
+  const [turn, setTurn] = useState(1);
+  const player = turn % 2 !== 0 ? 'X' : 'O';
 
-function incTurn(){
-  setTurn(turn + 1)
-}
+
 // Who's Turn
 const [input, setInput] = useState([
   "",
@@ -23,14 +22,17 @@ const [input, setInput] = useState([
   "",
 ])
 
-CheckWin("X");
-CheckWin("O");
 
+useEffect(() =>{
+  CheckWin(player)
+}, [input])
+
+// const inputHandler = () => {}
 function inputHandler(i){
   const fillSlot = input.slice();
   if(!fillSlot[i]){
     if(turn < 10){
-      if(turn % 2 !== 0){
+      if(player){
         fillSlot[i] = "X";
         setInput(fillSlot);
       }else{
@@ -40,6 +42,10 @@ function inputHandler(i){
     }
     incTurn()
   }
+}
+  
+function incTurn(){
+  setTurn(turn + 1)
 }
 
 // Check Wins
@@ -75,44 +81,13 @@ function CheckWin(player){
 
   return (
     <>
-        <div className='tic-tac-toe--board'>
-          <Slot 
-            input={input[0]}
-            onClick={() => inputHandler(0)}
-          />
-          <Slot 
-            input={input[1]}
-            onClick={() => inputHandler(1)}
-          />
-          <Slot 
-            input={input[2]}
-            onClick={() => inputHandler(2)}
-          />
-          <Slot 
-            input={input[3]}
-            onClick={() => inputHandler(3)}
-          />
-          <Slot 
-            input={input[4]}
-            onClick={() => inputHandler(4)}
-          />
-          <Slot 
-            input={input[5]}
-            onClick={() => inputHandler(5)}
-          />
-          <Slot 
-            input={input[6]}
-            onClick={() => inputHandler(6)}
-          />
-          <Slot 
-            input={input[7]}
-            onClick={() => inputHandler(7)}
-          />
-          <Slot 
-            input={input[8]}
-            onClick={() => inputHandler(8)}
-          />
-        </div>
+      <div className='tic-tac-toe--board'>
+        {[...Array(9)].map((index) => {
+          return (
+            <Slot input={input[index]} onClick={() => inputHandler(index)} />
+          );
+        })}
+      </div>
 
         <div className='my--button--container'>
           <button 
